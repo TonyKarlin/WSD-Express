@@ -1,6 +1,6 @@
 import app from './app.js';
 
-const hostname = 'localhost';
+const hostname = '127.0.0.1';
 const port = 3001;
 
 app.listen(port, hostname, () => {
