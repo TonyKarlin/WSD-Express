@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Example</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Cats</h1>
+  </header>
+  <main>
+    <form
+      type="POST"
+      action="http://localhost:3000/api/v1/cats"
+      enctype="multipart/form-data"
+    >
+      <input type="text" name="name" />
+      <input type="file" name="file">
+      </button>
+      <button type="submit">Submit</button>
+    </form>
+  </main>
+</body>

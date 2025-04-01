@@ -1,11 +1,11 @@
-import user from '../models/users-model.js';
+import {listAllUsers, findUserById, addUser} from '../models/users-model.js';
 
 const getUser = (req, res) => {
-  res.json(user.listAllUsers());
+  res.json(listAllUsers());
 };
 
 const getUserById = (req, res) => {
-  const user = user.getUserById(req.params.id);
+  const user = findUserById(req.params.id);
   if (user) {
     res.json(user);
   } else {
@@ -14,7 +14,7 @@ const getUserById = (req, res) => {
 };
 
 const postUser = (req, res) => {
-  const result = user.addUser(req.body);
+  const result = addUser(req.body);
   if (result.user_id) {
     res.status(201);
     res.json({message: 'New user added.', result});
@@ -22,7 +22,6 @@ const postUser = (req, res) => {
     res.sendStatus(400);
   }
 };
-
 const putUser = (req, res) => {
   // not implemented in this example, this is future homework
   res.sendStatus(200);
