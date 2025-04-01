@@ -7,14 +7,22 @@ const userItems = [
     role: 'user',
     password: 'password',
   },
+  {
+    user_id: 3610,
+    name: 'Jane Doe',
+    username: 'janedoe',
+    email: 'jane@metropolia.fi',
+    role: 'admin',
+    password: 'password',
+  },
 ];
 
 const listAllUsers = () => {
   return userItems;
 };
 
-const getUserById = (id) => {
-  return userItems.find((user) => user.user_id === parseInt(id));
+const findUserById = (id) => {
+  return userItems.find((item) => item.user_id === id);
 };
 
 const addUser = (user) => {
@@ -31,4 +39,4 @@ const addUser = (user) => {
   return {user_id: newId};
 };
 
-export {listAllUsers, getUserById, addUser};
+export {listAllUsers, findUserById, addUser};
