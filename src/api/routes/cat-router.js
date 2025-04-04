@@ -1,13 +1,15 @@
-import express from 'express';
 import {
+  deleteCat,
   getCat,
   getCatById,
+  getCatByOwnerId,
   postCat,
   putCat,
-  deleteCat,
 } from '../controllers/cat-controller.js';
-import multer from 'multer';
+
 import createThumbnail from '../../middlewares.js';
+import express from 'express';
+import multer from 'multer';
 
 const catRouter = express.Router();
 
@@ -19,5 +21,8 @@ catRouter
   .post(upload.single('file'), createThumbnail, postCat);
 
 catRouter.route('/:id').get(getCatById).put(putCat).delete(deleteCat);
+
+// TODO: Implement this route
+catRouter.route('/owner/:id').get(getCatByOwnerId);
 
 export default catRouter;
