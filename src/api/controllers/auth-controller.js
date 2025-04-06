@@ -1,7 +1,7 @@
 'use strict';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {login} from '../models/user-model.js';
+import {login} from '../models/users-model.js';
 
 const authUser = async (req, res) => {
   const result = await login(req.body.username);

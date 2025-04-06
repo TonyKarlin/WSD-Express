@@ -4,7 +4,7 @@ import {
   listAllUsers,
   modifyUser,
   removeUser,
-} from '../models/user-model.js';
+} from '../models/users-model.js';
 
 import bcrypt from 'bcrypt';
 

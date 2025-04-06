@@ -1,6 +1,7 @@
 import {
   addCat,
   findCatById,
+  findCatByOwnerId,
   listAllCats,
   modifyCat,
   removeCat,
@@ -51,12 +52,19 @@ const deleteCat = async (req, res) => {
 };
 
 const getCatByOwnerId = async (req, res) => {
-  const result = await getCatByOwnerId(req.params.id);
-  if (result.message) {
-    res.status(200);
-    res.json(result);
-  } else {
-    res.sendStatus(404);
+  try {
+    const ownerId = req.params.id;
+    console.log('Owner ID from request:', ownerId); // Debug log
+    const cats = await findCatByOwnerId(ownerId);
+    console.log('Cats fetched from database:', cats); // Debug log
+    if (cats.length > 0) {
+      res.status(200).json(cats);
+    } else {
+      res.status(404).json({message: 'No cats found for this owner'});
+    }
+  } catch (error) {
+    console.error('Error fetching cats by owner ID:', error);
+    res.status(500).json({error: 'Internal server error'});
   }
 };
 
