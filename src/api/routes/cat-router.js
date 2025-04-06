@@ -7,7 +7,7 @@ import {
   putCat,
 } from '../controllers/cat-controller.js';
 
-import createThumbnail from '../../middlewares.js';
+import {createThumbnail} from '../../middlewares.js';
 import express from 'express';
 import multer from 'multer';
 

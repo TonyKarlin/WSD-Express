@@ -4,30 +4,52 @@ import jwt from 'jsonwebtoken';
 import {login} from '../models/users-model.js';
 
 const authUser = async (req, res) => {
-  const result = await login(req.body.username);
+  try {
+    const {username, password} = req.body;
 
-  const passwordValid = bcrypt.compareSync(req.body.password, result.password);
+    // Validate request body
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({message: 'Username and password are required'});
+    }
 
-  console.log('password is valid', passwordValid);
+    const result = await login(username);
 
-  if (!passwordValid) {
-    res.sendStatus(401);
-    return;
+    const passwordValid = bcrypt.compareSync(password, result.password);
+    console.log('password is valid', passwordValid);
+
+    if (!passwordValid) {
+      res.sendStatus(401);
+      return;
+    }
+
+    const userWithNoPassword = {
+      user_id: result.user_id,
+      name: result.name,
+      username: result.username,
+      email: result.email,
+      role: result.role,
+    };
+
+    const token = jwt.sign(userWithNoPassword, process.env.JWT_SECRET, {
+      expiresIn: '24h',
+    });
+
+    res.json({user: userWithNoPassword, token});
+  } catch (err) {
+    console.log('err', err);
+    res.status(500).send({message: 'Error logging in'});
   }
-
-  const userWithNoPassword = {
-    user_id: result.user_id,
-    name: result.name,
-    username: result.username,
-    email: result.email,
-    role: result.role,
-  };
-
-  const token = jwt.sign(userWithNoPassword, process.env.JWT_SECRET, {
-    expiresIn: '24h',
-  });
-
-  res.json({user: userWithNoPassword, token});
 };
 
-export {authUser};
+const getMe = async (req, res) => {
+  console.log('getMe', res.locals.user);
+  if (res.locals.user) {
+    res.json({message: 'token ok', user: res.locals.user});
+  } else {
+    res.sendStatus(401);
+  }
+};
+
+export {authUser, getMe};

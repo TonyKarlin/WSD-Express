@@ -5,6 +5,7 @@ import {
   modifyUser,
   removeUser,
 } from '../models/users-model.js';
+import {validationResult} from 'express-validator';
 
 import bcrypt from 'bcrypt';
 
@@ -21,12 +22,18 @@ const getUserById = async (req, res) => {
   }
 };
 
-const postUser = async (req, res) => {
+const postUser = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new Error('Invalid or missing fields');
+    error.status = 400;
+    return next(error);
+  }
   req.body.password = bcrypt.hashSync(req.body.password, 10);
   const result = await addUser(req.body);
   if (result.user_id) {
     res.status(201);
-    res.json(result);
+    res.json({message: 'New user added.', result});
   } else {
     res.sendStatus(400);
   }
